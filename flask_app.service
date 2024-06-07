@@ -6,8 +6,7 @@ User=vagrant
 Group=www-data
 Environment="PATH=/home/vagrant/.local/share/virtualenvs/prueba-6ukuHTx7/bin/gunicorn"
 WorkingDirectory=/var/www/prueba
-ExecStart=/home/vagrant/.local/share/virtualenvs/app-1lvW3LzD/bin/gunicorn --workers 3
---bind unix:/var/www/app/app.sock wsgi:app
+ExecStart=/home/vagrant/.local/share/virtualenvs/prueba-6ukuHTx7/bin/gunicorn --workers 3 --bind unix:/var/www/prueba/app.sock wsgi:prueba
 [Install]
 WantedBy=multi-user.target
 

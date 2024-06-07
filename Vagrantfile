@@ -91,7 +91,7 @@ Vagrant.configure("2") do |config|
     pip3 install python-dotenv
     sudo mkdir -p /var/www/prueba
     cd /var/www
-    sudo chown -R $USER:www-data /var/www/prueba
+    sudo chown -R vagrant:www-data /var/www/prueba
     sudo chmod -R 775 /var/www/prueba
     sudo cp -r /vagrant/.env /var/www/prueba
     cd /var/www/prueba
@@ -99,11 +99,17 @@ Vagrant.configure("2") do |config|
     pipenv install flask gunicorn
     sudo cp -r /vagrant/application.py /var/www/prueba
     sudo cp -r /vagrant/wsgi.py /var/www/prueba
+    touch application.py wsgi.py
     pip install python-dotenv
     flask run --host '0.0.0.0'
     sudo cp -r /vagrant/flask_app.service /etc/systemd/system/
-    ##Hay que modificar y redirigir los puertos del virtual box a * Running on http://10.0.2.15:5000
+    # Hay que modificar y redirigir los puertos del virtual box a * Running on http://10.0.2.15:5000
     # which gunicorn - localizar la ruta o path de gunicorn - /home/vagrant/.local/share/virtualenvs/prueba-6ukuHTx7/bin/gunicorn
-    sudo cp -r /vagrant/app.conf /etc/nginx/sites-available/
+    cp -r /vagrant/app.conf /etc/nginx/sites-available/
+    ln -fs /etc/nginx/sites-available/app.conf /etc/nginx/sites-enabled/
+    sudo systemctl start nginx
+    sudo systemctl daemon-reload
+    sudo systemctl enable --now flask_app.service
+
   SHELL
 end
